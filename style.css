@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-start-game-div {
+    text-align: center;
+}
+
+.game-board {
+    width: 100vw;
+    height: 100vh;
+}
+
+.numbers-div {
+    padding: 0.5rem 0;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    border-radius: 1rem;
+}
+
+.admin-section {
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.timer-div {
+    width: 100px;
+    height: 40px;
+    margin-top: 2rem;
+    border: 2px solid black;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2rem;
+    border-radius: 1rem;
+}
