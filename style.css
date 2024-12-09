@@ -26,6 +26,13 @@ body {
     margin-top: 2rem;
     margin-left: 2rem;
     border-radius: 1rem;
+    border: 2px solid black;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+    max-width: 700px;
+    height: 500px;
 }
 
 .admin-section {
@@ -33,15 +40,48 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
 }
 
 .timer-div {
     width: 100px;
     height: 40px;
     margin-top: 2rem;
+    margin-right: 2rem;
     border: 2px solid black;
     text-align: center;
     font-weight: bold;
     font-size: 2rem;
     border-radius: 1rem;
+}
+
+.user-section {
+    border: 2px solid black;
+    margin-left: 2rem;
+}
+
+.user-number-div {
+    /* border: 2px solid black; */
+    max-width: 500px;
+    max-height: 100px;
+    overflow: scroll;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+    padding: 0.2rem 1rem;
+}
+
+.user-number-button {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+.radio-button {
+    color: blueviolet;
+    display: flex;
+    gap: 1rem;
 }
