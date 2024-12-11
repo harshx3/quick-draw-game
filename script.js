@@ -1,8 +1,14 @@
 const startButton = document.querySelector(".start-game-button");
 
 startButton.addEventListener('click', startGame);
+
+//main page = game board;
 const gameBoard = document.createElement("div");
+
+//admin section
 const adminSection = document.createElement("div");
+
+//user section
 const userSection = document.createElement("div");
 userSection.className = 'user-section';
 
@@ -49,31 +55,104 @@ function makeRadioButton() {
         //add event listener to call getradiovalue every time button click changes
         radio.addEventListener("change", getRadioValue);
     })
-
-
 }
 
+// function getRadioValue() {
+//     const radios = Array.from(document.getElementsByName("select-number"));
+//     let selectedOption = '';
+//     radios.forEach(radio => {
+//         if (radio.checked) {
+//             selectedOption = radio.value;
+//         }
+//     })
+//     console.log(selectedOption);
+//     coustomerSelectionBoard(selectedOption);
+// }
+
+// function coustomerSelectionBoard(selectedOption) {
+//     // console.log("coustomer board called");
+
+//     // console.log("user section appended to gameboard");
+//     const isPresent = document.querySelector("user-number-div");
+//     if (isPresent) {
+//         isPresent.remove();
+//     }
+//     const userNumberDiv = document.createElement("div");
+//     userNumberDiv.className = "user-number-div";
+//     userSection.append(userNumberDiv);
+
+//     let selectedCount = 0;
+//     let userSelectedNumbers = [];
+
+//     for (var i = 1; i <= 80; i++) {
+//         const numButton = document.createElement("button");
+//         numButton.innerText = i;
+//         numButton.className = "user-number-button";
+
+//         numButton.addEventListener("click", () => {
+//             const userSelectedNumberValue = parseInt(numButton.innerText);
+
+//             if (numButton.classList.contains("selected-numbers")) {
+//                 numButton.classList.remove("selected-numbers");
+//                 const index = userSelectedNumbers.indexOf(userSelectedNumberValue);
+
+//                 selectedCount--;
+//             }
+//             else if (selectedCount < selectedOption) {
+//                 numButton.classList.add("selected-numbers");
+//                 selectedCount++;
+//             }
+//             else {
+//                 alert("You have selected maximum allowed numbers");
+//             }
+
+
+//         });
+//         console.log(selectedCount);
+//         userNumberDiv.append(numButton);
+//     }
+
+
+// }
+
+
+// Move these variables outside the function to maintain their state
+let selectedCount = 0;
+let userSelectedNumbers = [];
+let currentSelectedOption = 0;
+let selectedOption = '';
+
 function getRadioValue() {
-    const radios = document.getElementsByName("select-number");
-    let selectedOption = '';
+    const radios = Array.from(document.getElementsByName("select-number"));
+
     radios.forEach(radio => {
         if (radio.checked) {
-            selectedOption = radio.value;
+            selectedOption = parseInt(radio.value);
         }
-    })
-    console.log(selectedOption);
+    });
+    console.log("number", selectedOption);
+    console.log("arra", userSelectedNumbers);
+
+    // Reset state when a new radio button is selected
+    selectedCount = 0;
+    userSelectedNumbers = [];
+    currentSelectedOption = selectedOption;
+
     coustomerSelectionBoard(selectedOption);
 }
 
 function coustomerSelectionBoard(selectedOption) {
-    // console.log("coustomer board called");
+    // Remove existing user number div if present
+    const existingDiv = document.querySelector(".user-number-div");
+    if (existingDiv) {
+        existingDiv.remove();
+    }
 
-    // console.log("user section appended to gameboard");
     const userNumberDiv = document.createElement("div");
     userNumberDiv.className = "user-number-div";
     userSection.append(userNumberDiv);
 
-    let selectedCount = 0;
+    let canSelectBetAmount = false;
 
     for (var i = 1; i <= 80; i++) {
         const numButton = document.createElement("button");
@@ -81,27 +160,82 @@ function coustomerSelectionBoard(selectedOption) {
         numButton.className = "user-number-button";
 
         numButton.addEventListener("click", () => {
-            if (selectedOption == 0) {
-                alert("Select number from 1 to 10");
-            }
-            else if (selectedCount < selectedOption) {
-                numButton.style.backgroundColor = "lightgreen";
-                numButton.disabled = true;
-                selectedCount++;
+            const userSelectedNumberValue = parseInt(numButton.innerText);
 
+            if (numButton.classList.contains("selected-numbers")) {
+                // Unselect the button
+                numButton.classList.remove("selected-numbers");
+
+                // Remove from selected numbers array
+                const index = userSelectedNumbers.indexOf(userSelectedNumberValue);
+                if (index > -1) {
+                    userSelectedNumbers.splice(index, 1);
+                }
+                selectedCount--;
+            }
+            else if (selectedCount < currentSelectedOption) {
+                // Select the button
+                numButton.classList.add("selected-numbers");
+
+                // Add to selected numbers array
+                userSelectedNumbers.push(userSelectedNumberValue);
+                selectedCount++;
             }
             else {
-                alert("You have selected maximum allowed numbers");
+                alert(`You have selected maximum allowed numbers (${currentSelectedOption})`);
             }
 
+            console.log("Selected Numbers:", userSelectedNumbers);
+            console.log("Selected Count:", selectedCount);
+
+
         });
-        console.log(selectedCount);
+
         userNumberDiv.append(numButton);
     }
+    betAmount();
+}
 
+
+function betAmount() {
+
+    const isPresent = document.querySelector(".amount-div");
+    if (isPresent) {
+        isPresent.remove();
+    }
+
+    const amountRadioButton = document.createElement("div");
+    amountRadioButton.className = 'amount-div';
+    userSection.append(amountRadioButton);
+    const name = document.createElement("p");
+    name.innerText = "Bet Amount";
+    amountRadioButton.append(name);
+    let amounts = [1, 2, 5, 10];
+    amounts.forEach((amount) => {
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "select-amount";
+        radio.value = amount;
+
+        const label = document.createElement("label");
+        label.textContent = amount;
+        label.appendChild(radio);
+        amountRadioButton.append(label);
+        radio.addEventListener("change", getAmountValue);
+    });
 
 }
 
+function getAmountValue() {
+    const radios = Array.from(document.getElementsByName("select-amount"));
+    let selectedAmount = '';
+    radios.forEach(radio => {
+        if (radio.checked) {
+            selectedAmount = parseInt(radio.value);
+        }
+    })
+    console.log(selectedAmount);
+}
 
 
 function startGame() {
