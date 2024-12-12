@@ -121,6 +121,7 @@ let selectedCount = 0;
 let userSelectedNumbers = [];
 let currentSelectedOption = 0;
 let selectedOption = '';
+let winningNumbers = [];
 
 function getRadioValue() {
     const radios = Array.from(document.getElementsByName("select-number"));
@@ -194,6 +195,7 @@ function coustomerSelectionBoard(selectedOption) {
         userNumberDiv.append(numButton);
     }
     betAmount();
+
 }
 
 
@@ -234,7 +236,8 @@ function getAmountValue() {
             selectedAmount = parseInt(radio.value);
         }
     })
-    console.log(selectedAmount);
+    console.log("amount", selectedAmount);
+    selectWinningNumbers();
 }
 
 
@@ -268,25 +271,76 @@ function startGame() {
 
 
     for (let i = 1; i <= 80; i++) {
-        setTimeout(() => {
-            const number = document.createElement("div");
-            number.innerHTML = i;
-            number.style.width = "20px";
-            number.style.height = "20px";
-            number.style.textAlign = "center";
-            number.style.border = "2px solid black";
-            number.style.borderRadius = "0.5rem";
-            number.style.padding = "1rem";
-            number.style.display = "flex";
-            number.style.justifyContent = "center"
-            number.style.alignItems = "center";
+        // setTimeout(() => {
+        const number = document.createElement("div");
+        number.className = "gameboard-numbers"
+        number.innerHTML = i;
+        number.style.width = "20px";
+        number.style.height = "20px";
+        number.style.textAlign = "center";
+        number.style.border = "2px solid black";
+        number.style.borderRadius = "0.5rem";
+        number.style.padding = "1rem";
+        number.style.display = "flex";
+        number.style.justifyContent = "center"
+        number.style.alignItems = "center";
 
 
 
-            numbersDiv.appendChild(number);
-        }, i * 1000);
+        numbersDiv.appendChild(number);
+        // }, i * 1000);
 
     }
     timer(adminSection);
     makeRadioButton();
+}
+
+
+// select the wining number
+function selectWinningNumbers() {
+    let i = 0;
+    while (i < 20) {
+        let lotteryNumber = Math.floor(Math.random() * 80) + 1;
+        if (!isLotterNumberPresent(lotteryNumber)) {
+            winningNumbers.push(lotteryNumber);
+            i++;
+        }
+    }
+    console.log("winnig", winningNumbers);
+    showWinningNumbers(winningNumbers);
+}
+
+function isLotterNumberPresent(number) {
+    return winningNumbers.includes(number);
+}
+
+// result view section
+function showWinningNumbers(winningNumbers) {
+    const resultDiv = document.createElement("div");
+    resultDiv.className = "result-div";
+    adminSection.appendChild(resultDiv);
+
+    winningNumbers.map((number) => {
+        const numBox = document.createElement("div");
+        numBox.className = "result-num-box"
+        resultDiv.appendChild(numBox);
+        numBox.innerText = number;
+    })
+    putWinningNumberOnBoard();
+}
+
+function putWinningNumberOnBoard() {
+
+    let numbersss = document.querySelectorAll(".gameboard-numbers");
+    let boardNumbers = Array.from(numbersss);
+    for (let i = 0; i <= winningNumbers.length; i++) {
+        setTimeout(() => {
+            boardNumbers.forEach((boardNumber) => {
+                if (parseInt(boardNumber.innerHTML) === winningNumbers[i]) {
+                    boardNumber.style.backgroundColor = "red";
+                }
+            })
+        }, i * 2000);
+
+    }
 }
